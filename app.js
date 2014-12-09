@@ -103,7 +103,9 @@ var initApp = function initApp() {
 				}, function (error, response, body) {
 					if (error) {
 						console.error(error);
-					} else if (body && body.access_token) {
+					} else if (body) {
+						body = JSON.parse(body);
+						
 						req.session.accessToken = body.access_token;
 					}
 					
