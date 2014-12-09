@@ -4,7 +4,7 @@ var redis = require('redis');
 var redisStore = require('connect-redis')(session);
 var url = require('url');
 
-var redisConfig = config.redis;
+var redisConfig = {};
 var instance = null;
 var redisconf;
 
@@ -21,6 +21,8 @@ function getInstance() {
             redisConfig.host = redisconf.hostname;
             redisConfig.port = redisconf.port;
             redisConfig.pass = redisconf.auth.split(":")[1];
+        } else {
+	        redisConfig = config.redis;
         }
 
         instance = redis.createClient(redisConfig.port, redisConfig.host);
