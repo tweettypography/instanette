@@ -107,6 +107,9 @@ var initApp = function initApp() {
 						req.session.accessToken = body.access_token;
 					}
 					
+					console.log(body);
+					console.log(req.session.accessToken);
+					
 					res.redirect('/');
 				});
 			} else if (req.session && req.session.accessToken) {
