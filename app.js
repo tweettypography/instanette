@@ -16,7 +16,7 @@ var staticBase = config.endpoints.defaultStaticBase + (config.endpoints.versione
 
 var getConfig = function (req) {
 	var browserConfig = {
-		clientId: config.credentials.clientId
+		clientId: config.isLocal ? config.credentials.clientId : process.env.clientId
 	};
 	
 	if (req && req.session && req.session.accessToken) {
