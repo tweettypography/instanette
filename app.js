@@ -109,9 +109,6 @@ var initApp = function initApp() {
 						req.session.accessToken = body.access_token;
 					}
 					
-					console.log(body);
-					console.log(req.session.accessToken);
-					
 					res.redirect('/');
 				});
 			} else if (req.session && req.session.accessToken) {
@@ -123,8 +120,8 @@ var initApp = function initApp() {
 	
 	// Display errors when we are in development mode
 	app.use(errorHandler({
-		dumpExceptions: config.developmentMode,
-		showStack: config.developmentMode
+		dumpExceptions: !!config.developmentMode,
+		showStack: !!config.developmentMode
 	}));
 	
 	return app;
