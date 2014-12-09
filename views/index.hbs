@@ -11,6 +11,8 @@
     <meta name="author" content="David Brainer-Banker">
     <title>{{title}}</title>
     
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//www.fuelcdn.com/fuelux/3.4.0/css/fuelux.min.css" rel="stylesheet">
     <link href="{{{staticBase}}}stylesheets/styles.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,7 +29,7 @@
 </div>
 <script>
 	define('config', {{{browser}}});
-	require.config({baseUrl:"{{{staticBase}}}vendor",paths:{templates:"../templates",models:"../javascripts/models",views:"../javascripts/views",app:"../javascripts/app",jquery:["jquery-1.11.1"],underscore:"lodash.underscore"},deps:["app/router"],enforceDefine:true,waitSeconds:0,shim:{"app/router":{deps:["jquery"]},underscore:{exports:"_"},json2:{exports:"JSON"}}});
+	require.config({baseUrl:"{{{staticBase}}}vendor",paths:{templates:"../templates",models:"../javascripts/models",views:"../javascripts/views",app:"../javascripts/app",jquery:["jquery-1.11.1"],underscore:"lodash.underscore",bootstrap:"//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min"},deps:["app/router"],enforceDefine:true,waitSeconds:0,shim:{underscore:{exports:"_"},json2:{exports:"JSON"}}});
 </script>
 </body>
 </html>

@@ -37,4 +37,3 @@ newrelic_agent.log
 build.txt
 config/local.js
 config/runtime.json
-public-optimized
