@@ -40,7 +40,7 @@ function getInstance() {
     
 var redisClient = getInstance();
 
-var sessionStore = session({store: new redisStore({ client: redisClient, ttl: config.cache.session_ttl }), proxy: true, resave: true, saveUninitialized: false, secret: '2ed99a026ca3481eafd587535aeef274', cookie: { path: '/', httpOnly: true, secure: !config.isLocal, maxAge: null, expires: false }});
+var sessionStore = session({store: new redisStore({ client: redisClient, ttl: config.cache.session_ttl }), proxy: true, resave: true, saveUninitialized: false, secret: '2ed99a026ca3481eafd587535aeef274', cookie: { path: '/', httpOnly: true, secure: false, maxAge: null, expires: false }});
 
 // We're using redis for our session store (and elsewhere throughout the app)
 var sessionMiddleware = function sessionMiddleware(req, res, next) {

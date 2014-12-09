@@ -92,8 +92,8 @@ var initApp = function initApp() {
 			if (req.query.code) {
 				request({
 					uri: 'https://api.instagram.com/oauth/access_token',
-					method: 'GET',
-					json: {
+					method: 'POST',
+					form: {
 						client_id: clientId,
 						client_secret: clientSecret,
 						grant_type: 'authorization_code',
