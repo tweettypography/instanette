@@ -10,13 +10,16 @@ var errorHandler = require('errorhandler');
 var hbs = require('hbs');
 var http = require('http');
 var methodOverride = require('method-override');
+var request = require('request');
 var parseUrlEncoded = bodyParser.urlencoded({ extended: false });
 
 var staticBase = config.endpoints.defaultStaticBase + (config.endpoints.versionedDir ? packageJson.version + '/' : '');
+var clientId = config.isLocal ? config.credentials.clientId : process.env.clientId;
+var clientSecret = config.isLocal ? config.credentials.clientSecret : process.env.clientSecret;
 
 var getConfig = function (req) {
 	var browserConfig = {
-		clientId: config.isLocal ? config.credentials.clientId : process.env.clientId
+		clientId: clientId
 	};
 	
 	if (req && req.session && req.session.accessToken) {
@@ -25,6 +28,7 @@ var getConfig = function (req) {
 	
 	return {
 			browser: JSON.stringify(browserConfig),
+			clientId: clientId,
 			title: packageJson.name,
 			description: packageJson.description,
 			htmlClasses: 'fuelux',
@@ -88,7 +92,29 @@ var initApp = function initApp() {
 	// The index page
 	app.route('/')
 		.get(function (req, res) {
-			res.render('index', getConfig(req));
+			if (req.query.code) {
+				request({
+					uri: 'https://api.instagram.com/oauth/access_token',
+					method: 'GET',
+					json: {
+						client_id: clientId,
+						client_secret: clientSecret,
+						grant_type: 'authorization_code',
+						redirect_uri: 'http://instanette.herokuapp.com/',
+						code: req.query.code
+					}
+				}, function (error, response, body) {
+					if (!error && body && body.access_token) {
+						req.session.accessToken = body.access_token;
+					}
+					
+					res.redirect('/');
+				});
+			} else if (req.session && req.session.accessToken) {
+				res.render('index', getConfig(req));
+			} else {
+				res.render('login', getConfig(req));
+			}
 		});
 	
 	// Display errors when we are in development mode
