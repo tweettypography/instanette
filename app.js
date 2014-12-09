@@ -77,7 +77,7 @@ var initApp = function initApp() {
 		.all(function logout(req, res) {
 			var isAjaxRequest = (req.get('X-Requested-With') === 'XMLHttpRequest');
 			
-			delete req.session;
+			delete req.session.accessToken;
 		
 			if (!isAjaxRequest) {
 				res.redirect('/');
