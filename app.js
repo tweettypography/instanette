@@ -99,8 +99,7 @@ var initApp = function initApp() {
 						grant_type: 'authorization_code',
 						redirect_uri: 'http://instanette.herokuapp.com/',
 						code: req.query.code
-					},
-					json: true
+					}
 				}, function (error, response, body) {
 					if (error) {
 						console.error(error);
