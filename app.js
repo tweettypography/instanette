@@ -4,14 +4,11 @@ var sessionMiddleware = require('./middleware/session');
 var gzipMiddleware = require('./middleware/gzip');
 var p3pMiddleware = require('./middleware/p3p');
 var _ = require('underscore');
-var bodyParser = require('body-parser');
 var express = require('express');
 var errorHandler = require('errorhandler');
 var hbs = require('hbs');
 var http = require('http');
-var methodOverride = require('method-override');
 var request = require('request');
-var parseUrlEncoded = bodyParser.urlencoded({ extended: false });
 
 var staticBase = config.endpoints.defaultStaticBase + (config.endpoints.versionedDir ? packageJson.version + '/' : '');
 var clientId = config.isLocal ? config.credentials.clientId : process.env.clientId;
@@ -62,7 +59,7 @@ var initApp = function initApp() {
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'hbs');
 	app.set('trust proxy', 1);
-	app.set('query parser', false);
+	app.set('query parser', true);
 	app.use(p3pMiddleware);
 	app.use(gzipMiddleware);
 	
@@ -104,7 +101,9 @@ var initApp = function initApp() {
 						code: req.query.code
 					}
 				}, function (error, response, body) {
-					if (!error && body && body.access_token) {
+					if (error) {
+						console.error(error);
+					} else if (body && body.access_token) {
 						req.session.accessToken = body.access_token;
 					}
 					
