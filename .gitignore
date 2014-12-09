@@ -29,14 +29,12 @@ node_modules
 
 npm-debug.log
 .DS_Store
-/config/runtime.json
 .idea
 *.bak
 newrelic_agent.log
-/newrelic_agent.log
 *.sublime-project
 *.sublime-workspace
 build.txt
-/config/local.js
-/node_modules
-/public-optimized
+config/local.js
+config/runtime.json
+public-optimized

@@ -1,8 +1,43 @@
-var redisClient = require('../redis-store');
-var helpers = require('../helpers');
 var config = require('config');
 var session = require('express-session');
+var redis = require('redis');
 var redisStore = require('connect-redis')(session);
+var url = require('url');
+
+var redisConfig = config.redis;
+var instance = null;
+var redisconf;
+
+function getInstance() {
+    if (instance === null) {
+        if (process.env.VCAP_SERVICES) {
+            redisconf = JSON.parse(process.env.VCAP_SERVICES);
+            redisconf = (redisconf['redis-2.6'] || redisconf['redis-2.4'] || redisconf['redis'])[0];
+            redisConfig.host = redisconf.credentials.host;
+            redisConfig.port = redisconf.credentials.port;
+            redisConfig.pass = redisconf.credentials.password;
+        } else if (process.env.REDISTOGO_URL) {
+            redisconf = url.parse(process.env.REDISTOGO_URL);
+            redisConfig.host = redisconf.hostname;
+            redisConfig.port = redisconf.port;
+            redisConfig.pass = redisconf.auth.split(":")[1];
+        }
+
+        instance = redis.createClient(redisConfig.port, redisConfig.host);
+
+        if (redisConfig.pass) {
+            instance.auth(redisConfig.pass);
+        }
+
+        instance.on("error", function (err) {
+            console.error("Redis error", err);
+        });
+    }
+    return instance;
+}
+    
+var redisClient = getInstance();
+
 var sessionStore = session({store: new redisStore({ client: redisClient, ttl: config.cache.session_ttl }), proxy: true, resave: true, saveUninitialized: false, secret: '2ed99a026ca3481eafd587535aeef274', cookie: { path: '/', httpOnly: true, secure: !config.isLocal, maxAge: null, expires: false }});
 
 // We're using redis for our session store (and elsewhere throughout the app)
@@ -16,7 +51,7 @@ var sessionMiddleware = function sessionMiddleware(req, res, next) {
 	try {
 		sessionStore(req, res, next);
 	} catch (ex) {
-		helpers.error('Exception', ex);
+		console.error('Exception', ex);
 		res.send(500, 'Internal Server Error');
 	}
 };

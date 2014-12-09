@@ -1,4 +1,3 @@
-var newrelic = require('newrelic');
 var config = require('config');
 var packageJson = require('./package.json');
 var sessionMiddleware = require('./middleware/session');
@@ -12,6 +11,26 @@ var hbs = require('hbs');
 var http = require('http');
 var methodOverride = require('method-override');
 var parseUrlEncoded = bodyParser.urlencoded({ extended: false });
+
+var staticBase = config.endpoints.defaultStaticBase + (config.endpoints.versionedDir ? packageJson.version + '/' : '');
+
+var getConfig = function (req) {
+	var browserConfig = {
+		clientId: config.credentials.clientId
+	};
+	
+	if (req && req.session && req.session.accessToken) {
+		browserConfig.accessToken = req.session.accessToken;
+	}
+	
+	return {
+			browser: JSON.stringify(browserConfig),
+			title: packageJson.name,
+			description: packageJson.description,
+			htmlClasses: 'fuelux',
+			staticBase: staticBase
+		};
+};
 
 // Run init just once to get the server up and running
 var initApp = function initApp() {
@@ -54,20 +73,22 @@ var initApp = function initApp() {
 	
 	// We don't have to destroy the session to log out, we just have to get rid of our security credentials
 	app.route('/logout')
-		.all(function () {
-		
-		});
-	
-	// Proxy requests to Instagram
-	app.route('/rest')
-		.all(function () {
+		.all(function logout(req, res) {
+			var isAjaxRequest = (req.get('X-Requested-With') === 'XMLHttpRequest');
 			
+			delete req.session;
+		
+			if (!isAjaxRequest) {
+				res.redirect('/');
+			} else {
+				res.status(200).send('OK');
+			}
 		});
 	
 	// The index page
 	app.route('/')
-		.get(function () {
-			
+		.get(function (req, res) {
+			res.render('index', getConfig(req));
 		});
 	
 	// Display errors when we are in development mode
