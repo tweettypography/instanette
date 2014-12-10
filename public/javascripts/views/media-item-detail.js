@@ -16,29 +16,37 @@ define(	[
 		,mediaItemDetailTemplate) {
 	return Marionette.Layout.extend({
 		template: mediaItemDetailTemplate,
-		
+
 		regions: {
 			commentList: '#comments'
 		},
-		
+
 		modelEvents: {
 			'change:comments': 'setComments',
 			'change': 'render'
 		},
-		
+
+		events: {
+			'click .like': 'like'
+		},
+
 		initialize: function() {
 			this.views = {};
 			this.comments = new CommentCollection(this.model.get('comments'), {
 				parse: true
 			});
 		},
-		
+
+		like: function () {
+			this.model.like();
+		},
+
 		setComments: function (model, value, options) {
 			if (value.data) {
 				this.comments.set(value.data);
 			}
 		},
-		
+
 		showComments: function () {
 			this.views.commentListView = this.views.commentListView || new CommentListView({
 				collection: this.comments
@@ -46,7 +54,7 @@ define(	[
 
 			this.commentList.show(this.views.commentListView);
 		},
-		
+
 		onRender: function () {
 			this.showComments();
 		}

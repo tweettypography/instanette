@@ -11,6 +11,16 @@ define(	[
 	return BaseModel.extend({
 		url: function () {
 			return config.rest + 'media/' + this.id;
+		},
+		like: function () {
+			var self = this;
+			$.ajax({
+				type: 'POST',
+				url: this.url() + '/likes',
+				complete: function(jqXHR, textStatus) {
+					self.fetch();
+				}
+			});
 		}
 	});
 });
