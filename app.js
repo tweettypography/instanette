@@ -20,7 +20,8 @@ var clientSecret = config.isLocal ? config.credentials.clientSecret : process.en
 var getConfig = function (req) {
 	var browserConfig = {
 		rest: config.endpoints.rest,
-		user: req.session && req.session.user
+		user: req.session && req.session.user,
+		version: packageJson.version
 	};
 	
 	return {
