@@ -26,6 +26,13 @@
 .fuelux #detail .large-image {
   max-width: 100%;
 }
+.fuelux #detail .large-video {
+  max-width: 100%;
+  display: block;
+  vertical-align: middle;
+  border: 0;
+  margin: 0;
+}
 .fuelux .repeater-search ul {
   display: none;
 }

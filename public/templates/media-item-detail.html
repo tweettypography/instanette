@@ -1,6 +1,12 @@
 <section id="detail" class="row">
 	<div class="col-md-7">
+		{{#if videos.low_resolution.url}}
+		<video class="large-video" src="{{videos.standard_resolution.url}}" controls>
+			Your browser does not support the <code>video</code> element.
+		</video>
+		{{else}}
 		<img class="large-image" src="{{images.standard_resolution.url}}">
+		{{/if}}
 	</div>
 	<div class="col-md-5">
 		<h3>{{likes.count}} Likes</h3>
