@@ -10,6 +10,8 @@ define( [
 		,Backbone
 		,SearchResultView
 		,searchTemplate) {
+	var geocoder = new window.google.maps.Geocoder();
+			
 	return Marionette.CompositeView.extend({
 		template: searchTemplate,
 		
@@ -36,14 +38,26 @@ define( [
 		},
 		
 		search: function () {
-			// Get the coordinates from Google
-			
+			var view = this;
 			var coordinates = {
 				lat: 39.848784,
 				lng: -86.141638
 			};
+			var $searchInput = this.$('input');
+			var searchText = $searchInput.val();
 			
-			this.trigger('search', coordinates);
+			// Get the coordinates from Google
+			geocoder.geocode({
+				address: searchText
+			}, function(result, status) {
+				if (_.isArray(result)) {
+					var first = result[0];
+					coordinates.lat = first.geometry.location.lat();
+					coordinates.lng = first.geometry.location.lng();
+				}
+				
+				view.trigger('search', coordinates);
+			});
 		}
 	});
 });

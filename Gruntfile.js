@@ -66,7 +66,8 @@ module.exports = function(grunt) {
 					generateSourceMaps: true,
 					preserveLicenseComments: false,
 					paths: {
-						config: 'empty:'
+						config: 'empty:',
+						google: 'https://maps.googleapis.com/maps/api/js?libraries=places'
 					},
 					modules: [
 						{ name: 'app/router' }

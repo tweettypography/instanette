@@ -21,8 +21,7 @@ var getConfig = function (req) {
 	var browserConfig = {
 		rest: config.endpoints.rest,
 		user: req.session && req.session.user,
-		version: packageJson.version,
-		googleApiKey: packageJson.googleApiKey
+		version: packageJson.version
 	};
 	
 	return {
@@ -32,7 +31,8 @@ var getConfig = function (req) {
 			description: packageJson.description,
 			htmlClasses: 'fuelux',
 			staticBase: staticBase,
-			redirectUrl: config.endpoints.redirectUrl
+			redirectUrl: config.endpoints.redirectUrl,
+			googleApiKey: config.googleApiKey
 		};
 };
 

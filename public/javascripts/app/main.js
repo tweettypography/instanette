@@ -8,8 +8,7 @@ require.config({
 		views: '../javascripts/views',
 		app: '../javascripts/app',
 		jquery: 'jquery-1.11.1',
-        underscore: 'lodash.underscore',
-        bootstrap: '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min'
+        underscore: 'lodash.underscore'
 	},
 	deps: ['app/router'],
 	enforceDefine: true,
