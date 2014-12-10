@@ -27,7 +27,7 @@ define( [
 		search: function () {
 			var $searchInput = this.$('input');
 			var searchText = $searchInput.val();
-			if(searchText.indexOf(' ')){
+			if(searchText.indexOf(' ') > 0){
 				searchText = searchText.substring(0, searchText.indexOf(' '));
 			}
 			this.trigger('search', searchText);
