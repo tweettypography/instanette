@@ -4,7 +4,7 @@ module.exports = {
 		uiBaseDir: '/public-optimized/',
 		versionedDir: true,
 		defaultStaticBase: '/',
-		redirectUrl: 'http://instanette.herokuapp.com/'
+		redirectUrl: 'https://instanette.herokuapp.com/'
 	},
 	developmentMode: false,
 	cache: {
