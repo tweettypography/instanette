@@ -39,3 +39,6 @@
 .fuelux .like .d {
   display: none;
 }
+.fuelux td.actions {
+  vertical-align: middle;
+}

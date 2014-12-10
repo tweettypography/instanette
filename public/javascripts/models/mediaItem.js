@@ -15,7 +15,7 @@ define(	[
 		like: function (callback) {
 			var self = this;
 			$.ajax({
-				type: 'POST',
+				type: this.get('user_has_liked') ? 'DELETE' : 'POST',
 				url: this.url() + '/likes',
 				complete: function(jqXHR, textStatus) {
 					self.fetch();
