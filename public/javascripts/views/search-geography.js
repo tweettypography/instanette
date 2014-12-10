@@ -31,6 +31,10 @@ define( [
 			'click .btn': 'search'
 		},
 		
+		findPlaces: function () {
+			// When the value in the input changes search the google places api
+		},
+		
 		search: function () {
 			// Get the coordinates from Google
 			

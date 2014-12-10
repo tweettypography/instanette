@@ -21,7 +21,8 @@ var getConfig = function (req) {
 	var browserConfig = {
 		rest: config.endpoints.rest,
 		user: req.session && req.session.user,
-		version: packageJson.version
+		version: packageJson.version,
+		googleApiKey: packageJson.googleApiKey
 	};
 	
 	return {
