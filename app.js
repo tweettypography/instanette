@@ -85,7 +85,7 @@ var initApp = function initApp() {
 			}
 		});
 		
-	app.route('/rest')
+	app.route('/rest/*')
 		.all(function rest(req, res) {
 			// We need to turn the URL passed in by the client into one that can be consumed by our api
 			var requestUrl = url.parse(req.url, true);
