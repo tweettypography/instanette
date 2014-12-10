@@ -38,7 +38,6 @@ define(	[
 		},
 
 		like: function () {
-			console.log('like 1');
 			this.model.like();
 		},
 
