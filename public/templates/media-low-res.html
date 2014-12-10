@@ -1,3 +1,9 @@
 <a href="/media/{{id}}">
+	{{#if videos.low_resolution.url}}
+	<video src="{{videos.low_resolution.url}}" controls>
+		Your browser does not support the <code>video</code> element.
+	</video>
+	{{else}}
 	<img src="{{images.low_resolution.url}}">
+	{{/if}}
 </a>
