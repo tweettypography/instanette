@@ -13,18 +13,19 @@ define(	[
 		app
 		,Marionette
 		,Backbone
-		,controller) {		
+		,controller) {
 	// We use Marionette to keep these files free of boilerplate code.
 	var Router = Marionette.AppRouter.extend({
 		// Update this collection of routes to map a new URL.
 		appRoutes: {
 			// Loading the page without an explicit path takes us to the 'home' screen
-			'': 'home',
+			'': 'haughternaut',
+			'stream': 'home',
 			'tags(/)': 'tags',
 			'geography(/)': 'geography',
 			'media/:id(/)': 'mediaItem'
 		},
-		
+
 		initialize: function () {
 			// Track page views with Google Analytics even when we use push state
 			this.bind('route', this._trackPageview);
