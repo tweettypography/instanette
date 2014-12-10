@@ -26,7 +26,7 @@ define( [
 
 		search: function () {
 			var $searchInput = this.$('input');
-			var searchText = $searchInput.val().replace(/\ /g, '');
+			var searchText = $searchInput.val().replace(/\W+/g, "");
 
 			this.trigger('search', searchText);
 		}
