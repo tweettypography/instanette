@@ -8,6 +8,10 @@
 .fuelux .repeater-list table thead > tr > th {
   color: #06365f;
 }
+.fuelux .repeater-list img {
+  height: 72px;
+  width: 72px;
+}
 .fuelux .repeater-thumbnail img {
   height: 150px;
   width: 150px;

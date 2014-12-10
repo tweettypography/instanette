@@ -10,6 +10,7 @@ define(	[
 		,config) {
 	return BaseCollection.extend({
 		model: MediaItem,
-		url: config.rest + 'users/self/feed'
+		url: config.rest + 'users/self/feed',
+		paged: true
 	});
 });

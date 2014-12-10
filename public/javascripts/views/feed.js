@@ -24,7 +24,14 @@ define( [
 			headerRight: '.repeater-header-right',
 		},
 		
+		events: {
+			'change .results-per-page': 'setResultsPerPage',
+			'click .repeater-next': 'nextPage'
+		},
+		
 		initialize: function() {
+			this.model = this.collection.pagination;
+			
 			this.views = {};
 			this.repeaterStyle = new Backbone.Model({
 				current: 'list'
@@ -39,9 +46,18 @@ define( [
 			});
 		},
 		
+		setResultsPerPage: function (e) {
+			var numResults = this.$(e.currentTarget).val();
+			this.model.set('count', numResults);
+		},
+		
+		nextPage: function () {
+			this.collection.nextPage();
+		},
+		
 		showListView: function () {
 			this.views.listView = this.views.listView || new FeedListView({
-				model: new Backbone.Model({}),
+				model: this.model,
 				collection: this.collection
 			});
 
@@ -50,7 +66,6 @@ define( [
 		
 		showGridView: function () {
 			this.views.gridView = this.views.gridView || new FeedGridView({
-				model: new Backbone.Model({}),
 				collection: this.collection
 			});
 
