@@ -1,13 +1,17 @@
 define(	[
 		'./app'
 		,'config'
+		,'backbone'
 		,'models/feed'
+		,'views/navigation'
 		,'views/home'
 		,'views/media-item-detail'
 	], function (
 		app
 		,config
+		,Backbone
 		,FeedCollection
+		,NavigationView
 		,HomeView
 		,MediaItemDetailView) {
 	
@@ -21,6 +25,11 @@ define(	[
 		app.models.set({
 			mediaItems: mediaItems
 		});
+		
+		views.navigationView = new NavigationView({
+			model: new Backbone.Model(config)
+		});
+		app.navigationRegion.show(views.navigationView);
 	});
 
 	var controller = {

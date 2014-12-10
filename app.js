@@ -19,7 +19,8 @@ var clientSecret = config.isLocal ? config.credentials.clientSecret : process.en
 
 var getConfig = function (req) {
 	var browserConfig = {
-		rest: config.endpoints.rest
+		rest: config.endpoints.rest,
+		user: req.session && req.session.user
 	};
 	
 	return {
@@ -78,6 +79,7 @@ var initApp = function initApp() {
 			var isAjaxRequest = (req.get('X-Requested-With') === 'XMLHttpRequest');
 			
 			delete req.session.accessToken;
+			delete req.session.user;
 		
 			if (!isAjaxRequest) {
 				res.redirect('/');
@@ -125,6 +127,7 @@ var initApp = function initApp() {
 						body = JSON.parse(body);
 						
 						req.session.accessToken = body.access_token;
+						req.session.user = body.user;
 					}
 					
 					res.redirect('/');

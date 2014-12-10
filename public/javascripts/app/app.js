@@ -28,6 +28,7 @@ define(	[
 
 	app.addRegions({
 		mainRegion: '#main',
+		navigationRegion: '#navigation'
 	});
 
 	app.addInitializer(function (options) {
