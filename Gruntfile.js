@@ -6,11 +6,11 @@ module.exports = function(grunt) {
 		watch: {
 			scripts: {
 				files: ['public/javascripts/**/*.js'],
-				tasks: ['jshint', 'complexity']
+				tasks: ['jshint']
 			},
 			css: {
 				files: ['public/stylesheets/less/**/*.less'],
-				tasks: ['recess:compile']
+				tasks: ['less:compile']
 			}
 		},
 		jshint: {

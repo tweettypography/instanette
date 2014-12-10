@@ -9,6 +9,8 @@ define(	[
 	return Marionette.Layout.extend({
 		template: navigationTemplate,
 		
+		className: 'row',
+		
 		initialize: function() {
 		}
 	});

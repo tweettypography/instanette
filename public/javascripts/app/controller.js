@@ -26,9 +26,7 @@ define(	[
 			mediaItems: mediaItems
 		});
 		
-		views.navigationView = new NavigationView({
-			model: new Backbone.Model(config)
-		});
+		views.navigationView = new NavigationView();
 		app.navigationRegion.show(views.navigationView);
 	});
 
@@ -41,7 +39,7 @@ define(	[
 			app.mainRegion.show(views.homeView);
 		},
 		mediaItem: function (id) {
-			var collection = app.models.get('items');
+			var collection = app.models.get('mediaItems');
 			var model = collection.get(id);
 			
 			// Just in case the collection hasn't been fetched yet, or this item isn't in the collection...
