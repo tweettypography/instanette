@@ -3,6 +3,7 @@ define(	[
 		,'config'
 		,'backbone'
 		,'models/feed'
+		,'models/mediaItem'
 		,'views/navigation'
 		,'views/home'
 		,'views/media-item-detail'
@@ -11,11 +12,10 @@ define(	[
 		,config
 		,Backbone
 		,FeedCollection
+		,MediaItemModel
 		,NavigationView
 		,HomeView
 		,MediaItemDetailView) {
-	
-	var views = {};
 	
 	app.addInitializer(function () {
 		var mediaItems = new FeedCollection();
@@ -26,17 +26,15 @@ define(	[
 			mediaItems: mediaItems
 		});
 		
-		views.navigationView = new NavigationView();
-		app.navigationRegion.show(views.navigationView);
+		var navigationView = new NavigationView();
+		app.navigationRegion.show(navigationView);
 	});
 
 	var controller = {
 		home: function () {
-			views.homeView = views.homeView || new HomeView({
+			app.mainRegion.show(new HomeView({
 				collection: app.models.get('mediaItems')
-			});
-		
-			app.mainRegion.show(views.homeView);
+			}));
 		},
 		mediaItem: function (id) {
 			var collection = app.models.get('mediaItems');
@@ -44,14 +42,15 @@ define(	[
 			
 			// Just in case the collection hasn't been fetched yet, or this item isn't in the collection...
 			if (!model) {
-				model = collection.create({
+				model = new MediaItemModel({
 					id: id
 				});
+				
+				model.fetch();
 			}
 			
 			app.mainRegion.show(new MediaItemDetailView({
-				model: model,
-				collection: collection
+				model: model
 			}));
 		}
 	};

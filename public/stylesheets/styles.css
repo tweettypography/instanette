@@ -5,7 +5,8 @@
 .fuelux .navbar-brand img {
   height: 100%;
 }
-.fuelux .repeater-list table thead > tr > th {
+.fuelux .repeater-list table thead > tr > th,
+.fuelux #detail h3 {
   color: #06365f;
 }
 .fuelux .repeater-list img {
@@ -16,4 +17,7 @@
   height: 150px;
   width: 150px;
   margin: 0;
+}
+.fuelux #detail .large-image {
+  max-width: 100%;
 }

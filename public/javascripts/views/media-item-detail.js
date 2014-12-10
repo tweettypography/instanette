@@ -3,28 +3,52 @@ define(	[
 		,'backbone.marionette'
 		,'backbone'
 		,'config'
-		,'tmpl!templates/item-detail.html'
+		,'models/base-collection'
+		,'views/comment-list'
+		,'tmpl!templates/media-item-detail.html'
 	], function (
 		app
 		,Marionette
 		,Backbone
 		,config
-		,itemDetailTemplate) {
+		,CommentCollection
+		,CommentListView
+		,mediaItemDetailTemplate) {
 	return Marionette.Layout.extend({
-		template: itemDetailTemplate,
+		template: mediaItemDetailTemplate,
 		
-		// We're going to listen for the model to change its name, if it does then we'll re-render this view
-		modelEvents: {
-			"change:name": "nameChanged" // equivalent to this.listenTo(this.model, "change:name", this.nameChanged)
+		regions: {
+			commentList: '#comments'
 		},
 		
-		nameChanged: function() {
-			// The name changed so let's re-render
-			this.render();
+		modelEvents: {
+			'change:comments': 'setComments',
+			'change': 'render'
+		},
+		
+		initialize: function() {
+			this.views = {};
+			this.comments = new CommentCollection(this.model.get('comments'), {
+				parse: true
+			});
+		},
+		
+		setComments: function (model, value, options) {
+			if (value.data) {
+				this.comments.set(value.data);
+			}
+		},
+		
+		showComments: function () {
+			this.views.commentListView = this.views.commentListView || new CommentListView({
+				collection: this.comments
+			});
+
+			this.commentList.show(this.views.commentListView);
 		},
 		
 		onRender: function () {
-			// We could perform some actions whenever we render
+			this.showComments();
 		}
 	});
 });
