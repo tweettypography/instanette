@@ -28,7 +28,8 @@ var getConfig = function (req) {
 			title: packageJson.name,
 			description: packageJson.description,
 			htmlClasses: 'fuelux',
-			staticBase: staticBase
+			staticBase: staticBase,
+			redirectUrl: config.endpoints.redirectUrl
 		};
 };
 
@@ -87,23 +88,24 @@ var initApp = function initApp() {
 		
 	app.route('/rest/*')
 		.all(function rest(req, res) {
-			// We need to turn the URL passed in by the client into one that can be consumed by our api
 			var requestUrl = url.parse(req.url, true);
 		
 			req.url = url.format({
-					pathname: requestUrl.pathname.replace('/rest', ''),
+					pathname: requestUrl.pathname.replace('/rest', '/v1'),
 					query: _.extend({
 							access_token: req.session.accessToken
 						}, requestUrl.query)
 				});
 			
+			req.headers = {};
+			
 			proxy.web(req, res, {
-				target: 'https://api.instagram.com/v1'
+				target: 'https://api.instagram.com:443'
 			});
 		});
 	
 	// The index page
-	app.route('/')
+	app.route(/^\/?([^\/]+)?/)
 		.get(function index(req, res) {
 			if (req.query.code) {
 				request({
@@ -113,7 +115,7 @@ var initApp = function initApp() {
 						client_id: clientId,
 						client_secret: clientSecret,
 						grant_type: 'authorization_code',
-						redirect_uri: 'http://instanette.herokuapp.com/',
+						redirect_uri: config.endpoints.redirectUrl,
 						code: req.query.code
 					}
 				}, function (error, response, body) {

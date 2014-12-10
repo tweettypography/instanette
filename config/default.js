@@ -3,7 +3,8 @@ module.exports = {
 		rest: '/rest/',
 		uiBaseDir: '/public-optimized/',
 		versionedDir: true,
-		defaultStaticBase: '/'
+		defaultStaticBase: '/',
+		redirectUrl: 'http://instanette.herokuapp.com/'
 	},
 	developmentMode: false,
 	cache: {
