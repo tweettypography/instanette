@@ -3,42 +3,78 @@ define(	[
 		,'config'
 		,'backbone'
 		,'models/feed'
+		,'models/search-tag'
+		,'models/search-geography'
 		,'models/mediaItem'
 		,'views/navigation'
 		,'views/home'
+		,'views/tags'
+		,'views/geography'
 		,'views/media-item-detail'
 	], function (
 		app
 		,config
 		,Backbone
 		,FeedCollection
+		,TagCollection
+		,GeographyCollection
 		,MediaItemModel
 		,NavigationView
 		,HomeView
+		,TagsView
+		,GeographyView
 		,MediaItemDetailView) {
 	
 	app.addInitializer(function () {
-		var mediaItems = new FeedCollection();
-
-		mediaItems.fetch();
-		
 		app.models.set({
-			mediaItems: mediaItems
+			mediaItems: new FeedCollection(),
+			tagItems: new TagCollection(),
+			geographyItems: new GeographyCollection()
 		});
 		
 		var navigationView = new NavigationView();
 		app.navigationRegion.show(navigationView);
 	});
 
+	var currentCollection;
+
 	var controller = {
 		home: function () {
+			var collection = app.models.get('mediaItems');
+			collection.fetch();
+			
+			currentCollection = collection;
+			
 			app.mainRegion.show(new HomeView({
-				collection: app.models.get('mediaItems')
+				collection: collection
+			}));
+		},
+		tags: function () {
+			var collection = app.models.get('tagItems');
+			collection.fetch();
+			
+			currentCollection = collection;
+			
+			app.mainRegion.show(new TagsView({
+				collection: collection
+			}));
+		},
+		geography: function () {
+			var collection = app.models.get('geographyItems');
+			collection.fetch();
+			
+			currentCollection = collection;
+			
+			app.mainRegion.show(new GeographyView({
+				collection: collection
 			}));
 		},
 		mediaItem: function (id) {
-			var collection = app.models.get('mediaItems');
-			var model = collection.get(id);
+			var model;
+			
+			if (currentCollection) {
+				model = currentCollection.get(id);
+			}
 			
 			// Just in case the collection hasn't been fetched yet, or this item isn't in the collection...
 			if (!model) {

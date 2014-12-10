@@ -22,6 +22,7 @@ define( [
 		regions: {
 			canvas: '.repeater-canvas',
 			headerRight: '.repeater-header-right',
+			headerLeft: '.repeater-header-left',
 		},
 		
 		events: {
@@ -80,9 +81,16 @@ define( [
 			this.headerRight.show(this.views.repeaterToggleView);
 		},
 		
+		showHeaderLeft: function () {
+			if (this.options.headerLeft) {
+				this.headerLeft.show(this.options.headerLeft);
+			}
+		},
+		
 		onRender: function () {
 			this.showListView();
 			this.showRepeaterToggle();
+			this.showHeaderLeft();
 		}
 	});
 });

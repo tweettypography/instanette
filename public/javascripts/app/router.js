@@ -20,6 +20,8 @@ define(	[
 		appRoutes: {
 			// Loading the page without an explicit path takes us to the 'home' screen
 			'': 'home',
+			'tags(/)': 'tags',
+			'geography(/)': 'geography',
 			'media/:id(/)': 'mediaItem'
 		},
 		
