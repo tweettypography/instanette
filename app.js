@@ -24,7 +24,7 @@ var getConfig = function (req) {
 		version: packageJson.version,
 		googleApiKey: packageJson.googleApiKey
 	};
-	
+
 	return {
 			browser: JSON.stringify(browserConfig),
 			clientId: clientId,
@@ -65,49 +65,50 @@ var initApp = function initApp() {
 	app.set('query parser', true);
 	app.use(p3pMiddleware);
 	app.use(gzipMiddleware);
-	
+
 	// We serve the static files (they should really live behind a CDN)
 	app.use(express.static(__dirname + config.endpoints.uiBaseDir, {
 		maxAge: !config.developmentMode && 31556926000
 	}));
-	
+
 	// These run after the static files are served and before the routes
 	app.disable('etag');
 	app.use(sessionMiddleware);
-	
+
 	// We don't have to destroy the session to log out, we just have to get rid of our security credentials
 	app.route('/logout')
 		.all(function logout(req, res) {
 			var isAjaxRequest = (req.get('X-Requested-With') === 'XMLHttpRequest');
-			
+
 			delete req.session.accessToken;
 			delete req.session.user;
-		
+
 			if (!isAjaxRequest) {
 				res.redirect('/');
 			} else {
 				res.status(200).send('OK');
 			}
 		});
-		
+
 	app.route('/rest/*')
 		.all(function rest(req, res) {
 			var requestUrl = url.parse(req.url, true);
-		
+
 			req.url = url.format({
 					pathname: requestUrl.pathname.replace('/rest', '/v1'),
 					query: _.extend({
 							access_token: req.session.accessToken
 						}, requestUrl.query)
 				});
-			
-			req.headers = {};
-			
+
+			delete req.headers.referer;
+			delete req.headers.host;
+
 			proxy.web(req, res, {
 				target: 'https://api.instagram.com:443'
 			});
 		});
-	
+
 	// The index page
 	app.route(/^\/?([^\/]+)?/)
 		.get(function index(req, res) {
@@ -127,11 +128,11 @@ var initApp = function initApp() {
 						console.error(error);
 					} else if (body) {
 						body = JSON.parse(body);
-						
+
 						req.session.accessToken = body.access_token;
 						req.session.user = body.user;
 					}
-					
+
 					res.redirect('/');
 				});
 			} else if (req.session && req.session.accessToken) {
@@ -140,13 +141,13 @@ var initApp = function initApp() {
 				res.render('login', getConfig(req));
 			}
 		});
-	
+
 	// Display errors when we are in development mode
 	app.use(errorHandler({
 		dumpExceptions: !!config.developmentMode,
 		showStack: !!config.developmentMode
 	}));
-	
+
 	return app;
 };
 
