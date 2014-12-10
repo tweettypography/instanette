@@ -1,17 +1,15 @@
 define(	[
 		'backbone'
 		,'./base-collection'
-		,'./item'
+		,'./mediaItem'
 		,'config'
 	], function (
 		Backbone
 		,BaseCollection
-		,Item
+		,MediaItem
 		,config) {
 	return BaseCollection.extend({
-		model: Item,
-		
-		// We're going to dynamically build URLs based on the base defined in the config file
-		url: config.rest + 'items'
+		model: MediaItem,
+		_url: '/media/self/feed'
 	});
 });

@@ -1,50 +1,48 @@
 define(	[
 		'./app'
 		,'config'
-		,'models/items'
-		,'models/item'
+		,'models/feed'
 		,'views/home'
-		,'views/item-detail'
+		,'views/media-item-detail'
 	], function (
 		app
 		,config
-		,ItemCollection
-		,ItemModel
+		,FeedCollection
 		,HomeView
-		,ItemDetailView) {
+		,MediaItemDetailView) {
 	
 	var views = {};
 	
 	app.addInitializer(function () {
-		var items = new ItemCollection();
+		var mediaItems = new FeedCollection();
 
-		items.fetch();
+		mediaItems.fetch();
 		
 		app.models.set({
-			items: items
+			mediaItems: mediaItems
 		});
 	});
 
 	var controller = {
 		home: function () {
 			views.homeView = views.homeView || new HomeView({
-				collection: app.models.get('items')
+				collection: app.models.get('mediaItems')
 			});
 		
 			app.mainRegion.show(views.homeView);
 		},
-		item: function (itemId) {
+		mediaItem: function (id) {
 			var collection = app.models.get('items');
-			var model = collection.get(itemId);
+			var model = collection.get(id);
 			
-			// Just in case the collection hasn't been fetched yet...
+			// Just in case the collection hasn't been fetched yet, or this item isn't in the collection...
 			if (!model) {
 				model = collection.create({
-					_id: itemId
+					id: id
 				});
 			}
 			
-			app.mainRegion.show(new ItemDetailView({
+			app.mainRegion.show(new MediaItemDetailView({
 				model: model,
 				collection: collection
 			}));

@@ -8,6 +8,8 @@ define(	[
 		,Backbone
 		,BaseModel) {
 	return BaseModel.extend({
-		idAttribute: '_id'
+		_url: function () {
+			return '/users/' + this.id;
+		}
 	});
 });

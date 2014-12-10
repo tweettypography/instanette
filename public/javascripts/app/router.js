@@ -20,7 +20,7 @@ define(	[
 		appRoutes: {
 			// Loading the page without an explicit path takes us to the 'home' screen
 			'': 'home',
-			'item/:itemId(/)': 'item'
+			'media/:id(/)': 'mediaItem'
 		},
 		
 		initialize: function () {
