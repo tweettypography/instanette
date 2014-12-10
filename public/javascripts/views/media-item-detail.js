@@ -5,6 +5,7 @@ define(	[
 		,'config'
 		,'models/base-collection'
 		,'views/comment-list'
+		,'views/like-button'
 		,'tmpl!templates/media-item-detail.html'
 	], function (
 		app
@@ -13,12 +14,14 @@ define(	[
 		,config
 		,CommentCollection
 		,CommentListView
+		,LikeButtonView
 		,mediaItemDetailTemplate) {
 	return Marionette.Layout.extend({
 		template: mediaItemDetailTemplate,
 
 		regions: {
-			commentList: '#comments'
+			commentList: '#comments',
+			actions: '.actions'
 		},
 
 		modelEvents: {
@@ -26,19 +29,11 @@ define(	[
 			'change': 'render'
 		},
 
-		events: {
-			'click .like': 'like'
-		},
-
 		initialize: function() {
 			this.views = {};
 			this.comments = new CommentCollection(this.model.get('comments'), {
 				parse: true
 			});
-		},
-
-		like: function () {
-			this.model.like();
 		},
 
 		setComments: function (model, value, options) {
@@ -57,6 +52,9 @@ define(	[
 
 		onRender: function () {
 			this.showComments();
+			this.actions.show(new LikeButtonView({
+				model: this.model
+			}));
 		}
 	});
 });

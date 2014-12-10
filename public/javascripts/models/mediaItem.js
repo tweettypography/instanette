@@ -12,13 +12,14 @@ define(	[
 		url: function () {
 			return config.rest + 'media/' + this.id;
 		},
-		like: function () {
+		like: function (callback) {
 			var self = this;
 			$.ajax({
 				type: 'POST',
 				url: this.url() + '/likes',
 				complete: function(jqXHR, textStatus) {
 					self.fetch();
+					if (_.isFunction(callback)) callback();
 				}
 			});
 		}
