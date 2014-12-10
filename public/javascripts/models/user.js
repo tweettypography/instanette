@@ -6,10 +6,11 @@ define(	[
 	], function (
 		app
 		,Backbone
-		,BaseModel) {
+		,BaseModel
+		,config) {
 	return BaseModel.extend({
-		_url: function () {
-			return '/users/' + this.id;
+		url: function () {
+			return config.rest + 'users/' + this.id;
 		}
 	});
 });

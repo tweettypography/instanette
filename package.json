@@ -22,7 +22,8 @@
 		"redis": "~0.12.1",
 		"requirejs": "~2.1.14",
 		"underscore": "~1.6.0",
-		"fuel-rest": "~0.7.2"
+		"fuel-rest": "~0.7.2",
+		"http-proxy": "~1.7.3"
 	},
 	"optionalDependencies": {
 		"hiredis": "~0.1.17"

@@ -9,6 +9,9 @@ var errorHandler = require('errorhandler');
 var hbs = require('hbs');
 var http = require('http');
 var request = require('request');
+var httpProxy = require('http-proxy');
+var url = require('url');
+var proxy = httpProxy.createProxyServer({});
 
 var staticBase = config.endpoints.defaultStaticBase + (config.endpoints.versionedDir ? packageJson.version + '/' : '');
 var clientId = config.isLocal ? config.credentials.clientId : process.env.clientId;
@@ -16,12 +19,8 @@ var clientSecret = config.isLocal ? config.credentials.clientSecret : process.en
 
 var getConfig = function (req) {
 	var browserConfig = {
-		clientId: clientId
+		rest: config.endpoints.rest
 	};
-	
-	if (req && req.session && req.session.accessToken) {
-		browserConfig.accessToken = req.session.accessToken;
-	}
 	
 	return {
 			browser: JSON.stringify(browserConfig),
@@ -85,10 +84,27 @@ var initApp = function initApp() {
 				res.status(200).send('OK');
 			}
 		});
+		
+	app.route('/rest')
+		.all(function rest(req, res) {
+			// We need to turn the URL passed in by the client into one that can be consumed by our api
+			var requestUrl = url.parse(req.url, true);
+		
+			req.url = url.format({
+					pathname: requestUrl.pathname.replace('/rest', ''),
+					query: _.extend({
+							access_token: req.session.accessToken
+						}, requestUrl.query)
+				});
+			
+			proxy.web(req, res, {
+				target: 'https://api.instagram.com/v1'
+			});
+		});
 	
 	// The index page
 	app.route('/')
-		.get(function (req, res) {
+		.get(function index(req, res) {
 			if (req.query.code) {
 				request({
 					uri: 'https://api.instagram.com/oauth/access_token',
