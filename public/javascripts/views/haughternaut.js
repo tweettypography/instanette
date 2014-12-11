@@ -24,6 +24,14 @@ define(	[
 		
 		itemViewContainer: '#haughternaut',
 		
+		events: {
+			'click .skip': 'nextTwo'
+		},
+		
+		initialize: function () {
+			this.listenTo(this.collection, 'change:user_has_liked', this.nextTwo);
+		},
+		
 		nextTwo: function() {
 			this.collection.fetch();
 		}
