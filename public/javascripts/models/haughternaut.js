@@ -8,58 +8,57 @@ define(	[
 		,BaseCollection
 		,MediaItem
 		,config) {
+			
+	var dictionary = [
+		'catsofinstagram',
+		'dogsofinstagram',
+		'snowy',
+		'igers',
+		'igersindy',
+		'igerssf',
+		'holidays',
+		'tbt',
+		'goats',
+		'hiking',
+		'fail',
+		'cats',
+		'lol',
+		'dogs',
+		'adventure',
+		'hawaii',
+		'japan',
+		'paris',
+		'canada',
+		'moose',
+		'nofilter'
+	];
+			
 	return BaseCollection.extend({
 		model: MediaItem,
 		url: function () {
 			return config.rest + 'tags/' + this.getRandomTag() + '/media/recent';
 		},
-		paged: true,
+		paged: false,
 		fetch: function (options) {
-			if (options && options.data && options.data.tag) {
-				this.tag = options.data.tag;
-				delete options.data.tag;
-			}
-
+			options = {
+				remove: false,
+				data: {
+					count: 1
+				}
+			};
+			
+			this.reset();
+			BaseCollection.prototype.fetch.call(this, options);
 			return BaseCollection.prototype.fetch.call(this, options);
 		},
 		getRandomTag: function getRandomTag(){
-			// var dictionary = [
-			// 	'tweegram',
-			// 	'photooftheday',
-			// 	'20likes',
-			// 	'amazing',
-			// 	'smile',
-			// 	'look',
-			// 	'instalike',
-			// 	'igers',
-			// 	'picoftheday',
-			// 	'food',
-			// 	'instadaily',
-			// 	'iphoneonly',
-			// 	'instagood',
-			// 	'bestoftheday',
-			// 	'instacool',
-			// 	'instago',
-			// 	'all',
-			// 	'webstagram',
-			// 	'colorful',
-			// 	'style'
-			// ];
-
-			var dictionary = [
-				'christmas',
-				'legos',
-				'thanksgiving',
-				'holidays',
-				'pizza',
-				'scotch',
-				'fedora',
-				'kids',
-				'puppies',
-				'goats'
-			];
-
-			return dictionary[Math.floor(Math.random()*dictionary.length)];
+			var i = Math.floor(Math.random()*dictionary.length);
+			var tag = dictionary[i];
+			
+			// In the future I'd like to add a function which removes elements from the array here
+			// and stores much larger quantities to be sorted client side -- saves on API requets.
+			
+			return tag;
 		}
 	});
 });
