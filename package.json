@@ -1,6 +1,6 @@
 {
 	"name": "Instanette",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"description": "A demo Backbone/Marionette app using the Instagram api",
 	"contributors": [{
 		"name": "David Brainer-Banker",

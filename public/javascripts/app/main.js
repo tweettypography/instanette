@@ -8,9 +8,10 @@ require.config({
 		views: '../javascripts/views',
 		app: '../javascripts/app',
 		jquery: 'jquery-1.11.1',
-        underscore: 'lodash.underscore'
+        underscore: 'lodash.underscore',
+        bootstrap: 'bootstrap-collapse'
 	},
-	deps: ['app/router'],
+	deps: ['app/router', 'bootstrap'],
 	enforceDefine: true,
 	waitSeconds: 0,
 	shim: {
@@ -19,6 +20,10 @@ require.config({
         },
         'json2': {
             exports: 'JSON'
+        },
+        'bootstrap': {
+	        deps: ['jquery'],
+	        exports: '$.fn.collapse'
         }
     }
 });
