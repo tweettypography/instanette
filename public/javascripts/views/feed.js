@@ -57,20 +57,16 @@ define( [
 		},
 		
 		showListView: function () {
-			this.views.listView = this.views.listView || new FeedListView({
+			this.canvas.show(new FeedListView({
 				model: this.model,
 				collection: this.collection
-			});
-
-			this.canvas.show(this.views.listView);
+			}));
 		},
 		
 		showGridView: function () {
-			this.views.gridView = this.views.gridView || new FeedGridView({
+			this.canvas.show(new FeedGridView({
 				collection: this.collection
-			});
-
-			this.canvas.show(this.views.gridView);
+			}));
 		},
 		
 		showRepeaterToggle: function () {
