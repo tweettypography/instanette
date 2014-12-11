@@ -14,7 +14,6 @@ define(	[
 			return config.rest + 'tags/' + this.getRandomTag() + '/media/recent';
 		},
 		paged: true,
-		count: 2,
 		fetch: function (options) {
 			if (options && options.data && options.data.tag) {
 				this.tag = options.data.tag;
@@ -24,27 +23,40 @@ define(	[
 			return BaseCollection.prototype.fetch.call(this, options);
 		},
 		getRandomTag: function getRandomTag(){
+			// var dictionary = [
+			// 	'tweegram',
+			// 	'photooftheday',
+			// 	'20likes',
+			// 	'amazing',
+			// 	'smile',
+			// 	'look',
+			// 	'instalike',
+			// 	'igers',
+			// 	'picoftheday',
+			// 	'food',
+			// 	'instadaily',
+			// 	'iphoneonly',
+			// 	'instagood',
+			// 	'bestoftheday',
+			// 	'instacool',
+			// 	'instago',
+			// 	'all',
+			// 	'webstagram',
+			// 	'colorful',
+			// 	'style'
+			// ];
+
 			var dictionary = [
-				'tweegram',
-				'photooftheday',
-				'20likes',
-				'amazing',
-				'smile',
-				'look',
-				'instalike',
-				'igers',
-				'picoftheday',
-				'food',
-				'instadaily',
-				'iphoneonly',
-				'instagood',
-				'bestoftheday',
-				'instacool',
-				'instago',
-				'all',
-				'webstagram',
-				'colorful',
-				'style'
+				'christmas',
+				'legos',
+				'thanksgiving',
+				'holidays',
+				'pizza',
+				'scotch',
+				'fedora',
+				'kids',
+				'puppies',
+				'goats'
 			];
 
 			return dictionary[Math.floor(Math.random()*dictionary.length)];

@@ -23,6 +23,13 @@
   vertical-align: middle;
   border: 0;
 }
+.fuelux .repeater .large-image {
+  width: 300px;
+}
+.fuelux .repeater .instachoice {
+  width: 300px;
+  float: left;
+}
 .fuelux #detail .large-image {
   max-width: 100%;
 }

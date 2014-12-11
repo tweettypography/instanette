@@ -2,13 +2,13 @@ define( [
 		'app/app'
 		,'backbone.marionette'
 		,'backbone'
-		,'views/feed-list'
+		,'views/haughternaut-grid'
 		,'tmpl!templates/haughternaut.html'
 	], function (
 		app
 		,Marionette
 		,Backbone
-		,FeedListView
+		,FeedGridView
 		,feedTemplate) {
 	return Marionette.Layout.extend({
 		template: feedTemplate,
@@ -36,7 +36,7 @@ define( [
 		},
 
 		showListView: function () {
-			this.views.listView = this.views.listView || new FeedListView({
+			this.views.listView = this.views.listView || new FeedGridView({
 				model: this.model,
 				collection: this.collection
 			});
