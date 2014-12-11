@@ -30,7 +30,8 @@
   width: 300px;
   float: left;
 }
-.fuelux #detail .large-image {
+.fuelux #detail .large-image,
+.fuelux #haughternaut .large-image {
   max-width: 100%;
 }
 .fuelux #detail .large-video {
@@ -39,6 +40,12 @@
   vertical-align: middle;
   border: 0;
   margin: 0;
+}
+.fuelux #haughternaut .actions {
+  width: 100%;
+  text-align: center;
+  margin-top: -50%;
+  margin-bottom: 50%;
 }
 .fuelux .repeater-search ul {
   display: none;

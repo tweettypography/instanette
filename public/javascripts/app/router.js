@@ -19,10 +19,10 @@ define(	[
 		// Update this collection of routes to map a new URL.
 		appRoutes: {
 			// Loading the page without an explicit path takes us to the 'home' screen
-			'': 'haughternaut',
-			'stream': 'home',
+			'': 'home',
 			'tags(/)': 'tags',
 			'geography(/)': 'geography',
+			'haughternaut(/)': 'haughternaut',
 			'media/:id(/)': 'mediaItem'
 		},
 

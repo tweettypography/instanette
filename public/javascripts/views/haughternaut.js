@@ -1,30 +1,31 @@
 define(	[
 		'backbone.marionette'
 		,'backbone'
-		,'views/haughternaut-feed'
-		,'tmpl!templates/home.html'
+		,'views/media-item'
+		,'tmpl!templates/haughternaut.html'
+		,'tmpl!templates/media-high-res.html'
 	], function (
 		Marionette
 		,Backbone
-		,FeedView
-		,homeTemplate) {
-	return Marionette.Layout.extend({
-		template: homeTemplate,
-
-		regions: {
-			'feed': '#feed'
-		},
-
-		initialize: function() {
-			this.views = {
-				feedView: new FeedView({
-					collection: this.collection
-				})
-			};
-		},
-
-		onRender: function () {
-			this.feed.show(this.views.feedView);
+		,MediaItemView
+		,haughternautTemplate
+		,mediaItemTemplate) {
+	return Marionette.CompositeView.extend({
+		template: haughternautTemplate,
+		
+		tagName: 'section',
+		
+		className: 'haughternaut',
+		
+		itemView: MediaItemView.extend({
+			template: mediaItemTemplate,
+			className: 'col-md-6 col-xs-6'
+		}),
+		
+		itemViewContainer: '#haughternaut',
+		
+		nextTwo: function() {
+			this.collection.fetch();
 		}
 	});
 });

@@ -46,9 +46,6 @@ define(	[
 	var controller = {
 		haughternaut: function haughternaut() {
 			var collection = app.models.get('haughternautItems');
-			collection.pagination = new Backbone.Model({
-				count: 2
-			});
 			collection.fetch();
 
 			currentCollection = collection;
