@@ -30,7 +30,20 @@ define(	[
 		'paris',
 		'canada',
 		'moose',
-		'nofilter'
+		'nofilter',
+		'australia',
+		'montreal',
+		'vancouver',
+		'portland',
+		'mountain',
+		'cat',
+		'tiger',
+		'billmurray',
+		'forest',
+		'waterfall',
+		'tokyo',
+		'mcm',
+		'wcw'
 	];
 			
 	return BaseCollection.extend({
@@ -51,9 +64,16 @@ define(	[
 			BaseCollection.prototype.fetch.call(this, options);
 			return BaseCollection.prototype.fetch.call(this, options);
 		},
+		dictionary: [],
 		getRandomTag: function getRandomTag(){
-			var i = Math.floor(Math.random()*dictionary.length);
-			var tag = dictionary[i];
+			if (this.dictionary.length === 0) {
+				this.dictionary = _.clone(dictionary);
+			}
+			
+			var i = Math.floor(Math.random()*this.dictionary.length);
+			var tag = this.dictionary[i];
+			
+			this.dictionary.splice(i, 1);
 			
 			// In the future I'd like to add a function which removes elements from the array here
 			// and stores much larger quantities to be sorted client side -- saves on API requets.
