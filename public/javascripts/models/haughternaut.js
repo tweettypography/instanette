@@ -40,64 +40,41 @@ define(function (require) {
 		'billmurray',
 		'forest',
 		'waterfall',
-		'tokyo',
-		'mcm',
-		'wcw'
+		'tokyo'
 	];
+	
+	var SHOWN_PER_VEIW = 2;
 
 	return BaseCollection.extend({
 		model: MediaItem,
 		url: function () {
-			this.lastTag = this.getRandomTag();
-			return config.rest + 'tags/' + this.lastTag + '/media/recent';
+			return config.rest + 'tags/' + this.getRandomTag() + '/media/recent';
 		},
 		paged: false,
 		seenPics: [],
-		SHOWN_PER_VEIW: 2,
+		dictionary: [],
+		masterList: new Backbone.Collection(),
 		fetch: function (options) {
-			var self = this;
 			options = {
 				remove: false,
 				data: {
-					count: 150
-				},
-				success: function chooseTwo(collection, response, options) {
-					//filter out already seen pictures
-					_.each(collection.models, function(element, index, list){
-						if(_.contains(self.seenPics, element.id)){
-							collect.models.splice(index, 1);
-						}
-					});
-
-					//if collection has less than two pictures in it, fetch again
-					if(collection.models.length < self.SHOWN_PER_VEIW){
-						self.fetch();
-					}
-
-					//choose N pictures
-					var chosenPics = [];
-					for(var i=0; i<self.SHOWN_PER_VEIW; i++){
-						//choose a pic
-						var picId = collection.models[Math.floor(Math.random() * collection.models.length)].id;
-						chosenPic = collection.get(picId);
-
-						//remove pic from models
-						collection.remove(picId, {silent: true});
-
-						//add pictures to "already seen"
-						self.seenPics.push(chosenPic);
-					}
-
-					//replace collection's models with chosen few
-					collection.set(chosenPics);
+					count: 50
 				}
 			};
 
 			this.reset();
-			// BaseCollection.prototype.fetch.call(this, options);
-			return BaseCollection.prototype.fetch.call(this, options);
+			
+			// Once we get a master list over a certain length we can start fetching way less often
+			if (this.masterList.length < 300) {
+				BaseCollection.prototype.fetch.call(this, options);
+			} else {
+				this.add({
+					data: []
+				}, {
+					parse: true
+				});
+			}
 		},
-		dictionary: [],
 		getRandomTag: function getRandomTag() {
 			if (this.dictionary.length === 0) {
 				this.dictionary = _.clone(dictionary);
@@ -108,10 +85,39 @@ define(function (require) {
 
 			this.dictionary.splice(i, 1);
 
-			// In the future I'd like to add a function which removes elements from the array here
-			// and stores much larger quantities to be sorted client side -- saves on API requets.
-
 			return tag;
+		},
+		parse: function (data) {
+			var chosenPics = [];
+			
+			data = BaseCollection.prototype.parse.call(this, data);
+			
+			// Filter out already seen pictures
+			this.masterList.add(_.reject(data, function(pic) {
+				return _.contains(this.seenPics, pic.id);
+			}, this));
+
+			// If collection has less than two pictures in it, go ahead and use the dups
+			if (this.masterList.length < SHOWN_PER_VEIW) {
+				this.masterList.add(data);
+			}
+
+			// Choose N pictures
+			for (var i = 0; i < SHOWN_PER_VEIW; i++) {
+				// Choose a pic
+				var chosenPic = this.masterList.models[Math.floor(Math.random() * this.masterList.length)];
+				
+				// Add the pic to the data we will return
+				chosenPics.push(chosenPic);
+				
+				// Add the pic to "already seen"
+				this.seenPics.push(chosenPic.id);
+				
+				// Remove pic from the master list
+				this.masterList.remove(chosenPic);
+			}
+
+			return chosenPics;
 		}
 	});
 });

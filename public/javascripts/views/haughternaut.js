@@ -25,15 +25,6 @@ define(function (require) {
 
 		initialize: function () {
 			this.listenTo(this.collection, 'change:user_has_liked', this.nextTwo);
-			this.listenTo(this.collection, 'sync', this.refreshTag);
-		},
-
-		refreshTag: function() {
-			this.$el.find('h4').text(this.getTag());
-		},
-
-		getTag: function() {
-			return this.collection.lastTag;
 		},
 
 		nextTwo: function() {
