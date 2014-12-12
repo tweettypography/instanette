@@ -46,6 +46,10 @@ define(	[
 	var controller = {
 		haughternaut: function haughternaut() {
 			var collection = app.models.get('haughternautItems');
+			var feed = app.models.get('mediaItems');
+			
+			// Let's put some pics from our own feed in there
+			collection.seed(feed.toJSON());
 			collection.fetch();
 
 			currentCollection = collection;

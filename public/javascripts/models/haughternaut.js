@@ -87,15 +87,22 @@ define(function (require) {
 
 			return tag;
 		},
+		seed: function (data) {
+			// Filter out already seen / liked pictures
+			this.masterList.add(_.reject(data, function(pic) {
+				var seen = _.contains(this.seenPics, pic.id);
+				var liked = pic.user_has_liked;
+				
+				return seen || liked;
+			}, this));
+		},
 		parse: function (data) {
 			var chosenPics = [];
 			
 			data = BaseCollection.prototype.parse.call(this, data);
 			
 			// Filter out already seen pictures
-			this.masterList.add(_.reject(data, function(pic) {
-				return _.contains(this.seenPics, pic.id);
-			}, this));
+			this.seed(data);
 
 			// If collection has less than two pictures in it, go ahead and use the dups
 			if (this.masterList.length < SHOWN_PER_VEIW) {
