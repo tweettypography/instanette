@@ -39,7 +39,6 @@ define(function (require) {
 		'tiger',
 		'billmurray',
 		'forest',
-		'waterfall',
 		'tokyo'
 	];
 	
@@ -58,14 +57,14 @@ define(function (require) {
 			options = {
 				remove: false,
 				data: {
-					count: 50
+					count: 30
 				}
 			};
 
 			this.reset();
 			
 			// Once we get a master list over a certain length we can start fetching way less often
-			if (this.masterList.length < 300) {
+			if (this.masterList.length < 360) {
 				BaseCollection.prototype.fetch.call(this, options);
 			} else {
 				this.add({
