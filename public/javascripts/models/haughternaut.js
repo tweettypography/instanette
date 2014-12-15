@@ -111,7 +111,7 @@ define(function (require) {
 			// Choose N pictures
 			for (var i = 0; i < SHOWN_PER_VEIW; i++) {
 				// Choose a pic
-				var chosenPic = this.masterList.models[Math.floor(Math.random() * this.masterList.length)];
+				var chosenPic = this.masterList.toJSON()[Math.floor(Math.random() * this.masterList.length)];
 				
 				// Add the pic to the data we will return
 				chosenPics.push(chosenPic);
